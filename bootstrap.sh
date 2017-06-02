@@ -130,6 +130,46 @@ osx_homebrew()
 
 ###############################################################################
 # This function takes care of installing all dependencies for building redox on
+# FreeBSD 10 or later 
+# @params:	$1 the emulator to install, bhyve or qemu
+###############################################################################
+freebsd()
+{
+	echo "Detected FreeBSD"
+	echo "Updating system..."
+
+	if [ -z "$(which nasm)" ]; then
+		echo "Installing nasm..."
+		sudo pkg install nasm
+	fi
+
+	if [ -z "$(which git)" ]; then
+		echo "Installing git..."
+		sudo pkg install git
+	fi
+
+	if [ "$1" == "qemu" ]; then
+		if [ -z "$(which qemu-system-x86_64)" ]; then
+			echo "Installing QEMU..."
+			sudo pkg install qemu
+		else
+			echo "QEMU already installed!"
+		fi
+	elif [ "$1" == "bhyve" ]; then
+		if [ -z "$(which bhyve)" ]; then
+			echo "Installing bhyve..."
+			sudo pkg install vm-bhyve
+		else
+			echo "bhyve already installed!"
+		fi
+	fi
+
+	echo "Installing fuse..."
+	sudo pkg install fuse
+}
+
+###############################################################################
+# This function takes care of installing all dependencies for building redox on
 # Arch linux
 # @params:	$1 the emulator to install, virtualbox or qemu
 ###############################################################################
@@ -500,6 +540,8 @@ done
 banner
 if [ "Darwin" == "$(uname -s)" ]; then
 	osx "$emulator"
+elif [ "FreeBSD" == "$(uname -s)" ]; then
+	freebsd "$emulator"
 else
 	# Here we will user package managers to determine which operating system the user is using
 	# Arch linux
