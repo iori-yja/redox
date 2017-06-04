@@ -12,6 +12,13 @@ ifeq ($(UNAME),Darwin)
 	export STRIP=$(ARCH)-elf-strip
 	VB_AUDIO=coreaudio
 	VBM="/Applications/VirtualBox.app/Contents/MacOS/VBoxManage"
+else ifeq ($(UNAME),FreeBSD)
+	ECHO=echo
+	FUMOUNT=sudo umount -u
+	export LD=ld
+	export LDFLAGS=--gc-sections
+	export NPROC=sysctl -n hw.ncpu
+	export STRIP=strip
 else
 	ECHO=echo
 	FUMOUNT=fusermount -u
