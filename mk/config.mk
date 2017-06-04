@@ -14,7 +14,7 @@ ifeq ($(UNAME),Darwin)
 	VBM="/Applications/VirtualBox.app/Contents/MacOS/VBoxManage"
 else ifeq ($(UNAME),FreeBSD)
 	ECHO=echo
-	FUMOUNT=sudo umount -u
+	FUMOUNT=sudo umount
 	export LD=ld
 	export LDFLAGS=--gc-sections
 	export NPROC=sysctl -n hw.ncpu
