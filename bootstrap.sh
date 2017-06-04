@@ -143,9 +143,6 @@ freebsd()
 		sudo pkg install gcc 
 	fi
 
-	echo "Installing nasm..."
-	sudo pkg install compiler-rt 
-
 	if [ -z "$(which nasm)" ]; then
 		echo "Installing nasm..."
 		sudo pkg install nasm
@@ -172,8 +169,15 @@ freebsd()
 		fi
 	fi
 
-	echo "Installing fuse..."
-	sudo pkg install fuse
+	if [ ! -s /usr/local/include/Block.h ]; then
+		echo "Installing compiler-rt..."
+		sudo pkg install compiler-rt
+	fi
+
+	if [ ! -s /usr/local/include/fuse.h ]; then
+		echo "Installing fuse..."
+		sudo pkg install fuse fusefs-libs
+	fi
 }
 
 ###############################################################################
