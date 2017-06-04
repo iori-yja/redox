@@ -138,6 +138,14 @@ freebsd()
 	echo "Detected FreeBSD"
 	echo "Updating system..."
 
+	if [ -z "$(which gcc)" ]; then
+		echo "Installing gcc..."
+		sudo pkg install gcc 
+	fi
+
+	echo "Installing nasm..."
+	sudo pkg install compiler-rt 
+
 	if [ -z "$(which nasm)" ]; then
 		echo "Installing nasm..."
 		sudo pkg install nasm
